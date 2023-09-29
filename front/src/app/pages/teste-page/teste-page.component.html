@@ -1,0 +1,23 @@
+<p>Teste do Componente Cidade Estado</p>
+
+<div>
+
+  <select-box-cidade-estado
+    widthEstado="300px"
+    widthMunicipio="300px"
+    [estadoPadrao]="meuestado"
+    (municipioSelecionado)="getMunicipio($event)"
+    (estadoSelecionado)="getEstado($event)"
+  ></select-box-cidade-estado>
+
+
+</div>
+<br>
+<br>
+<div class="dx-field-value">
+  {{'Estado: '+recebeEstado}}
+  <br>
+  {{'Cidade: '+recebeMunicipio}}
+
+</div>
+

@@ -1,0 +1,7 @@
+<root>
+    <item name='org.springframework.core.CoroutinesUtils org.reactivestreams.Publisher&lt;?&gt; invokeSuspendingFunction(java.lang.reflect.Method, java.lang.Object, java.lang.Object...)'>
+        <annotation name='org.jetbrains.annotations.Contract'>
+            <val name="pure" val="true"/>
+        </annotation>
+    </item>
+</root>

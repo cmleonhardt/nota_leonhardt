@@ -1,0 +1,60 @@
+<h5>Notas</h5>
+<div>
+  <dx-data-grid
+    id="gridNotas"
+    [dataSource]="dataSource"
+    keyExpr="id"
+    [showBorders]="true"
+  >
+    <dxo-paging [enabled]="false"></dxo-paging>
+    <dxo-editing
+      mode="popup"
+      [allowUpdating]="true"
+      [allowAdding]="true"
+      [allowDeleting]="true"
+    >
+      <dxo-popup
+        title= "Notas"
+        [showTitle]="true"
+        [width]="700"
+        [height]="400"
+      >
+      </dxo-popup>
+      <dxo-form>
+        <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+          <dxi-item dataField="data"></dxi-item>
+          <dxi-item dataField="numero"></dxi-item>
+          <dxi-item dataField="cliente"></dxi-item>
+          <dxi-item dataField="itens"></dxi-item>
+
+<!--          <div *dxTemplate="let data of 'dateCellTemplate'">-->
+<!--            <dx-date-box type="date"-->
+<!--                         [useMaskBehavior]="true"-->
+<!--                         [(value)]="data"-->
+<!--                         [displayFormat]="'dd/MM/yyyy'"-->
+<!--                         width="200">-->
+<!--            </dx-date-box>-->
+<!--          </div>-->
+
+          <!--          <div *dxTemplate="let data of 'dateCellTemplate'">-->
+<!--            {{ data | date : 'dd-MM-yyyy'}}-->
+
+<!--          </div>-->
+        </dxi-item>
+      </dxo-form>
+    </dxo-editing>
+
+    <dxi-column dataField="data" caption="Data" dataType="date"></dxi-column>
+    <dxi-column dataField="numero" caption="Numero da Nota"></dxi-column>
+    <dxi-column dataField="cliente.nome" caption="Cliente" template="clienteTemplate"></dxi-column>
+    <dxi-column dataField="itens" caption="Itens"></dxi-column>
+
+    <div *dxTemplate="let data of 'clienteTemplate'">
+      {{ data.nome}}
+    </div>
+
+
+    ></dx-data-grid>
+</div>
+
+
