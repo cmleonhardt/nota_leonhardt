@@ -6,9 +6,10 @@
 <div>
   <dx-data-grid
     id="gridCliente"
-    [dataSource]="dataSource"
+    [dataSource]="clientes"
     keyExpr="id"
     [showBorders]="true"
+    (onSaved)="onSavedCliente($event)"
   >
     <dxo-paging [enabled]="false"></dxo-paging>
     <dxo-editing

@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Cliente} from "../../model/cliente";
 import {ClienteService} from "../../shared/services/cliente.service";
 import {Observable} from "rxjs";
+import DevExpress from "devextreme";
+import data = DevExpress.data;
 
 @Component({
   selector: 'app-clientes',
@@ -11,19 +13,42 @@ import {Observable} from "rxjs";
 })
 export class ClientesComponent implements OnInit{
 
-  dataSource: Cliente[];
-  clientes: Cliente[];
+  clientes: Cliente[] = [];
 
   constructor( private clienteService: ClienteService) {
-    // this.dataSource = this.clienteService.clienteList().subscribe();
   }
 
   ngOnInit() {
-    this.clienteService.clienteList().subscribe( res => this.dataSource = res );
-    console.log(this.clientes)
-
+    this.clienteService.clienteList().subscribe( res => {
+      this.clientes = res
+    } );
   }
 
   getClienteService(): any { return this.clienteService;}
 
+  onSavedCliente(event: any) {
+    if(event.changes){
+      for (let change of event.changes) {
+        if(change.type == 'insert'){
+          this.clienteService.insert(change.data).subscribe();
+        }
+      }
+    }
+
+    if(event.changes){
+      for (let change of event.changes) {
+        if(change.type == 'update'){
+          this.clienteService.update(change.data).subscribe();
+        }
+      }
+    }
+
+    if(event.changes){
+      for (let change of event.changes) {
+        if(change.type == 'remove'){
+          this.clienteService.delete(change.key).subscribe();
+        }
+      }
+    }
+  }
 }

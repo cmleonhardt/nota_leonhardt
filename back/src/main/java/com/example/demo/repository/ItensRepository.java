@@ -1,17 +1,17 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.Itens;
+import com.example.demo.model.Item;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface ItensRepository extends JpaRepository<Itens, Integer> {
+public interface ItensRepository extends JpaRepository<Item, Integer> {
 
     @Override
-    List<Itens> findAll();
+    List<Item> findAll();
 
-    Itens findById(Optional<Itens> id);
+    Item findById(Optional<Item> id);
 
 
 }

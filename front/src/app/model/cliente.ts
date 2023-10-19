@@ -7,7 +7,7 @@ export class Cliente {
 
   nome: string;
 
-  constructor(obj: any) {
+  constructor(obj?: any) {
     if (obj) {
       this.id = obj.id;
       this.codigo = obj.codigo;

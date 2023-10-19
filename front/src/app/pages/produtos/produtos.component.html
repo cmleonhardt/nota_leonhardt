@@ -2,9 +2,10 @@
 <div>
   <dx-data-grid
     id="gridProdutos"
-    [dataSource]="dataSource"
+    [dataSource]="produtos"
     keyExpr="id"
     [showBorders]="true"
+    (onSaved)="onSavedProduto($event)"
   >
     <dxo-paging [enabled]="false"></dxo-paging>
     <dxo-editing

@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-public class Itens {
+@Table(name = "itens")
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,7 +17,8 @@ public class Itens {
 
     private BigDecimal quantidade;
 
-    private BigDecimal valorTotalDoItem;
+    @Column( name = "valor_total_do_item")
+    private BigDecimal valorDoItem;
 
     @ManyToOne
     private Produto produto;
@@ -51,12 +53,12 @@ public class Itens {
         this.quantidade = quantidade;
     }
 
-    public BigDecimal getValorTotalDoItem() {
-        return valorTotalDoItem;
+    public BigDecimal getValorDoItem() {
+        return valorDoItem;
     }
 
-    public void setValorTotalDoItem(BigDecimal valorTotalDoItem) {
-        this.valorTotalDoItem = valorTotalDoItem;
+    public void setValorDoItem(BigDecimal valorTotalDoItem) {
+        this.valorDoItem = valorTotalDoItem;
     }
 
     public Produto getProduto() {

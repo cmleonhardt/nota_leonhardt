@@ -9,14 +9,14 @@ import {Produto} from "../../model/produto";
 })
 export class ProdutoService {
 
-  private readonly api = '/produto/produtos';
+  private readonly api = '/api/produto';
 
   constructor(private http: HttpClient) {
 
   }
 
   produtoList(): Observable<Produto[]> {
-    return this.http.get<Cliente[]>(this.api)
+    return this.http.get<Produto[]>(this.api + '/produtos')
       .pipe(
         map ( origen => {
           let vetor: Produto[] = [];
@@ -29,5 +29,18 @@ export class ProdutoService {
       );
   }
 
+  insert(produto: Produto): Observable<Produto>{
+    if(produto.id){
+      produto.id = null;
+    }
+    return this.http.post<Produto>( this.api + '/new', produto);
+  }
 
+  update(produto: Produto): Observable<Produto>{
+    return this.http.put<Produto>( this.api + '/', produto);
+  }
+
+  delete(id: number): Observable<any>{
+    return this.http.delete<any>( this.api + '/' + id);
+  }
 }

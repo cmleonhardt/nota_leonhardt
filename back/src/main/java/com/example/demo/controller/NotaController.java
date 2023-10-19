@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.Itens;
+import com.example.demo.model.Item;
 import com.example.demo.model.Nota;
 import com.example.demo.repository.NotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +37,8 @@ public class NotaController {
 
     @PostMapping("/new")
     public Nota postNota(@RequestBody Nota nota){
-        if ( nota != null && nota.getItens() != null && !nota.getItens().isEmpty()){
-            for (Itens iten : nota.getItens()) {
+        if ( nota != null && nota.getItem() != null && !nota.getItem().isEmpty()){
+            for (Item iten : nota.getItem()) {
                if ( iten.getNota() == null){
                    iten.setNota(nota);
                }
@@ -56,7 +56,15 @@ public class NotaController {
 
     @PutMapping("/")
     public Nota updateNota(@RequestBody Nota nota){
-        repository.save(nota);
+        if ( nota != null && nota.getItem() != null && !nota.getItem().isEmpty()){
+            for (Item iten : nota.getItem()) {
+                if ( iten.getNota() == null){
+                    iten.setNota(nota);
+                }
+            }
+
+        }
+        nota = repository.save(nota);
         return nota;
     }
 }

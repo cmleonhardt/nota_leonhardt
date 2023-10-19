@@ -3,7 +3,7 @@ export class Produto {
   id: number;
   codigo: string;
   descricao: string;
-  valorUnitario: string;
+  valorUnitario: number;
 
   constructor(obj: any) {
     if (obj) {

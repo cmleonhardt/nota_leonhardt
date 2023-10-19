@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class Nota {
 
     private Date data;
 
+    private BigDecimal valorTotal;
+
     @ManyToOne
     private Cliente cliente;
 
     @OneToMany(mappedBy = "nota", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Itens> itens;
+    private List<Item> item;
 
 
 
@@ -61,12 +64,17 @@ public class Nota {
         this.cliente = cliente;
     }
 
-    public List<Itens> getItens() {
-        return itens;
+    public List<Item> getItem() {
+        return item;
     }
 
-    public void setItens(List<Itens> itens) {
-        this.itens = itens;
+    public void setItem(List<Item> item) { this.item = item; }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
     }
 
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
+    }
 }

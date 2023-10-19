@@ -1,5 +1,5 @@
 import {Cliente} from "./cliente";
-import {Itens} from "./itens";
+import {Item} from "./item";
 
 export class Nota {
 
@@ -9,17 +9,21 @@ export class Nota {
 
   data: Date;
 
+  valorTotal: number;
+
   cliente: Cliente;
 
-  itens: Itens;
+  item: Item[];
 
-  constructor(obj: any) {
+  constructor(obj?: any) {
     if (obj) {
       this.id = obj.id;
       this.numero = obj.numero;
       this.data = obj.data;
       this.cliente = obj.cliente;
-      this.itens = obj.itens;
+      this.item = obj.item;
+      this.valorTotal = obj.valorTotal;
     }
   }
 }
+

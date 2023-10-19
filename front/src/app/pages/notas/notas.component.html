@@ -2,9 +2,19 @@
 <div>
   <dx-data-grid
     id="gridNotas"
-    [dataSource]="dataSource"
+    [dataSource]="notas"
     keyExpr="id"
     [showBorders]="true"
+    (onInitNewRow)="onInitNewRowNotas($event)"
+    (onSaving)="showLog($event, 'onSaving')"
+    (onSaved)="onSavedNota($event)"
+    (onRowInserting)="showLog($event, 'onRowInserting')"
+    (onRowInserted)="showLog($event, 'onRowInserted')"
+    (onRowUpdating)="showLog($event, 'onRowUpdating')"
+    (onRowUpdated)="showLog($event, 'onRowUpdated')"
+    (onRowRemoving)="showLog($event, 'onrowRemoving')"
+    (onRowRemoved)="showLog($event, 'onRowRemoved')"
+
   >
     <dxo-paging [enabled]="false"></dxo-paging>
     <dxo-editing
@@ -16,43 +26,95 @@
       <dxo-popup
         title= "Notas"
         [showTitle]="true"
-        [width]="700"
-        [height]="400"
+        [width]="800"
+        [height]="800"
       >
       </dxo-popup>
       <dxo-form>
         <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-          <dxi-item dataField="data"></dxi-item>
+          <dxi-item dataField="data" datatype="date"></dxi-item>
           <dxi-item dataField="numero"></dxi-item>
           <dxi-item dataField="cliente"></dxi-item>
-          <dxi-item dataField="itens"></dxi-item>
-
-<!--          <div *dxTemplate="let data of 'dateCellTemplate'">-->
-<!--            <dx-date-box type="date"-->
-<!--                         [useMaskBehavior]="true"-->
-<!--                         [(value)]="data"-->
-<!--                         [displayFormat]="'dd/MM/yyyy'"-->
-<!--                         width="200">-->
-<!--            </dx-date-box>-->
-<!--          </div>-->
-
-          <!--          <div *dxTemplate="let data of 'dateCellTemplate'">-->
-<!--            {{ data | date : 'dd-MM-yyyy'}}-->
-
-<!--          </div>-->
         </dxi-item>
+        <dxi-item dataField="item" [colSpan]="2"></dxi-item>
+        <dxi-item itemType="empty"></dxi-item>
+        <dxi-item dataField="valorTotal" [colSpan]="1"></dxi-item>
       </dxo-form>
     </dxo-editing>
 
-    <dxi-column dataField="data" caption="Data" dataType="date"></dxi-column>
+    <dxi-column dataField="data" caption="Data" dataType="date" cellTemplate="cellTemplateData" editCellTemplate="editCellTemplateData"></dxi-column>
     <dxi-column dataField="numero" caption="Numero da Nota"></dxi-column>
-    <dxi-column dataField="cliente.nome" caption="Cliente" template="clienteTemplate"></dxi-column>
-    <dxi-column dataField="itens" caption="Itens"></dxi-column>
+    <dxi-column dataField="cliente" caption="Cliente" cellTemplate="cellTemplateCliente" editCellTemplate="editCellTemplateCliente"></dxi-column>
+    <dxi-column dataField="item" caption="Item" [visible]="false" editCellTemplate="editCellTemplateItens"></dxi-column>
+    <dxi-column dataField="valorTotal" caption="Total"></dxi-column>
 
-    <div *dxTemplate="let data of 'clienteTemplate'">
-      {{ data.nome}}
+    <div *dxTemplate="let data of 'cellTemplateData'">{{ data.value  | date:'dd/MM/YYYY'}}</div>
+    <div *dxTemplate="let data of 'editCellTemplateData'">
+      <dx-date-box
+        [(value)]="data.value"
+        displayFormat="dd/MM/yyyy"
+      >
+      </dx-date-box>
     </div>
 
+    <div *dxTemplate="let data of 'cellTemplateCliente'">{{data.value ? data.value.nome : ''}}</div>
+
+    <div *dxTemplate="let data of 'editCellTemplateCliente'">
+      <dx-select-box
+        [items]="clientes"
+        displayExpr="nome"
+        [value]="getCliente(data.value)"
+        (onValueChanged)="onValueChangedCliente($event, data)"
+      >
+      </dx-select-box>
+    </div>
+
+
+    <div *dxTemplate="let data of 'editCellTemplateItens'">
+      <dx-data-grid
+        id="gridItem"
+        keyExpr="id"
+        [dataSource]="data.value"
+        [showBorders]="true"
+        >
+        <dxo-editing
+          mode="row"
+          [allowUpdating]="true"
+          [allowAdding]="true"
+          [allowDeleting]="true"
+        >
+
+          <dxo-form>
+            <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+              <dxi-item dataField="numeroDoItem"></dxi-item>
+              <dxi-item dataField="produto"></dxi-item>
+              <dxi-item dataField="quantidade"></dxi-item>
+              <dxi-item dataField="valorDoItem"></dxi-item>
+            </dxi-item>
+
+          </dxo-form>
+        </dxo-editing>
+
+        <dxi-column dataField="numeroDoItem" caption="Nº Item"></dxi-column>
+        <dxi-column dataField="produto" caption="Produto" cellTemplate="cellTemplateProduto" editCellTemplate="editCellTemplateProduto"></dxi-column>
+        <dxi-column dataField="quantidade" caption="Quantidade"></dxi-column>
+        <dxi-column dataField="valorDoItem" caption="Valor do Item"></dxi-column>
+
+        <div *dxTemplate="let data of 'cellTemplateProduto'">{{data.value ? data.value.descricao : ''}}</div>
+
+        <div *dxTemplate="let data of 'editCellTemplateProduto'">
+          <dx-select-box
+            [items]="produtos"
+            displayExpr = "descricao"
+            [value]="getProdutos(data.value)"
+            (onFocusOut)= "onValueChangedProduto($event, data)"
+          >
+          </dx-select-box>
+        </div>
+
+      </dx-data-grid>
+
+    </div>
 
     ></dx-data-grid>
 </div>
