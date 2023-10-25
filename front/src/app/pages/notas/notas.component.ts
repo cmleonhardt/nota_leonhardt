@@ -5,7 +5,7 @@ import {Cliente} from "../../model/cliente";
 import {ClienteService} from "../../shared/services/cliente.service";
 import {Produto} from "../../model/produto";
 import {ProdutoService} from "../../shared/services/produto.service";
-import {DxDataGridComponent} from "devextreme-angular";
+import DevExpress from "devextreme";
 
 
 @Component({
@@ -26,6 +26,8 @@ export class NotasComponent implements OnInit {
   produto: Produto;
   nota: Nota;
 
+  padrao: any;
+
   constructor( private notaService: NotaService,
                private clienteService: ClienteService,
                private produtoService: ProdutoService ) {
@@ -36,6 +38,7 @@ export class NotasComponent implements OnInit {
   ngOnInit() {
     this.notaService.notaList().subscribe( res => {
       this.notas = res;
+      this.notas.sort((a,b)=> a.numero - b.numero);
     } );
     console.log(this.notas)
 
@@ -79,35 +82,45 @@ export class NotasComponent implements OnInit {
     }
   }
 
-  onValueChangedCliente(event: any, data: any) {
-    if(event.value){
-      data.setValue(event.value);
+  onInitNewRowItem(event:any, data:any){
+    console.log(event)
+    console.log(data)
+    if(!event.data.item){
+      console.log("2 passo")
     }
   }
 
+  onValueChangedCliente(event: any, data: any) {
+    data.setValue(event.value);
+  }
+
+  onSavedItem(event: any, data: any) {
+    data.setValue(data.value);
+  }
+
+  setCellValueItem(newData, value, currentRowData){
+    let total = 0;
+    if(value && value.length>0){
+      for (let v of value) {
+        total+=v.valorDoItem;
+      }
+    }
+    newData.valorTotal = total;
+  }
   onValueChangedProduto(event: any, data: any){
     if(event.value) {
       data.setValue(event.value);
-      console.log( "Deu certo até aqui")
-      if(data.data && data.data.quantidade){
-        data.data.valorDoItem = data.data.quantidade * data.data.produto.valorUnitario;
-
-        if(this.notas){
-          for (let n of this.notas) {
-            if(n.id == data.data.nota){
-              n.valorTotal = 0
-              for (let item of n.item) {
-                n.valorTotal = n.valorTotal + item.valorDoItem;
-
-              }
-
-            }
-          }
-        }
-      }
     }
   }
-
+  setCellValueProduto(newData, value, currentRowData){
+    newData.produto = value;
+    newData.valorDoItem = value.valorUnitario * currentRowData.quantidade;
+    console.log(newData.produto);
+  }
+  setCellValueQuantidade(newData, value, currentRowData){
+    newData.quantidade = value;
+    newData.valorDoItem = currentRowData.produto?.valorUnitario * value;
+  }
 
   showLog(event: any, log: string){
     console.log(log);
@@ -137,23 +150,7 @@ export class NotasComponent implements OnInit {
         }
       }
     }
-
   }
-
-
-  // onSavedItem(event: any) {
-  //   if(event.changes){
-  //     for (let change of event.changes) {
-  //       if(change.type == 'update'){
-  //         this.notaService.update(change.data).subscribe();
-  //       }
-  //     }
-  //   }
-  // }
-  // onRowUpdate(event: any, data: any) {
-  //   if(event.data) {
-  //     data.setValue(event.data);
-  //     console.log( "Deu certo até aqui no item")
-  //   }
-  // }
 }
+
+

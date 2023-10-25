@@ -25,6 +25,7 @@ import {NotasComponent} from './pages/notas/notas.component';
 import {ClienteService} from "./shared/services/cliente.service";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {ProdutoService} from "./shared/services/produto.service";
+import { OrderPipe } from './shared/components/order.pipe';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import {ProdutoService} from "./shared/services/produto.service";
     AppComponent,
     ClientesComponent,
     ProdutosComponent,
-    NotasComponent
+    NotasComponent,
+    OrderPipe
 
   ],
   imports: [

@@ -13,23 +13,22 @@
     (onRowUpdating)="showLog($event, 'onRowUpdating')"
     (onRowUpdated)="showLog($event, 'onRowUpdated')"
     (onRowRemoving)="showLog($event, 'onrowRemoving')"
-    (onRowRemoved)="showLog($event, 'onRowRemoved')"
+    (onRowRemoved)="showLog($event, 'onRowRemoved')">
 
-  >
     <dxo-paging [enabled]="false"></dxo-paging>
     <dxo-editing
       mode="popup"
       [allowUpdating]="true"
       [allowAdding]="true"
-      [allowDeleting]="true"
-    >
+      [allowDeleting]="true">
+
       <dxo-popup
         title= "Notas"
         [showTitle]="true"
         [width]="800"
-        [height]="800"
-      >
+        [height]="800">
       </dxo-popup>
+
       <dxo-form>
         <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
           <dxi-item dataField="data" datatype="date"></dxi-item>
@@ -42,18 +41,28 @@
       </dxo-form>
     </dxo-editing>
 
-    <dxi-column dataField="data" caption="Data" dataType="date" cellTemplate="cellTemplateData" editCellTemplate="editCellTemplateData"></dxi-column>
-    <dxi-column dataField="numero" caption="Numero da Nota"></dxi-column>
-    <dxi-column dataField="cliente" caption="Cliente" cellTemplate="cellTemplateCliente" editCellTemplate="editCellTemplateCliente"></dxi-column>
-    <dxi-column dataField="item" caption="Item" [visible]="false" editCellTemplate="editCellTemplateItens"></dxi-column>
-    <dxi-column dataField="valorTotal" caption="Total"></dxi-column>
+    <dxi-column dataField="data" caption="Data" dataType="date" cellTemplate="cellTemplateData" editCellTemplate="editCellTemplateData">
+      <dxi-validation-rule type="required" message="Por favor, inserir uma data"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="numero" caption="Numero da Nota">
+      <dxi-validation-rule type="required" message="Por favor, inserir um numero de nota"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="cliente" caption="Cliente" cellTemplate="cellTemplateCliente" editCellTemplate="editCellTemplateCliente">
+      <dxi-validation-rule type="required" message="Por favor, inserir um cliente"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="item" caption="Item" [visible]="false" editCellTemplate="editCellTemplateItens"[setCellValue]="setCellValueItem"></dxi-column>
+    <dxi-column dataField="valorTotal" caption="Total" [allowEditing]="false">
+      <dxi-validation-rule type="required" message="Por favor, inserir item para gerar um Valor Total"></dxi-validation-rule>
+    </dxi-column>
 
     <div *dxTemplate="let data of 'cellTemplateData'">{{ data.value  | date:'dd/MM/YYYY'}}</div>
     <div *dxTemplate="let data of 'editCellTemplateData'">
       <dx-date-box
         [(value)]="data.value"
-        displayFormat="dd/MM/yyyy"
-      >
+        displayFormat="dd/MM/yyyy">
       </dx-date-box>
     </div>
 
@@ -64,25 +73,24 @@
         [items]="clientes"
         displayExpr="nome"
         [value]="getCliente(data.value)"
-        (onValueChanged)="onValueChangedCliente($event, data)"
-      >
+        (onValueChanged)="onValueChangedCliente($event, data)">
       </dx-select-box>
     </div>
-
 
     <div *dxTemplate="let data of 'editCellTemplateItens'">
       <dx-data-grid
         id="gridItem"
         keyExpr="id"
         [dataSource]="data.value"
-        [showBorders]="true"
-        >
+        (onSaved)="onSavedItem($event, data)"
+        (onInitNewRow)="onInitNewRowItem($event, data)"
+        [showBorders]="true">
+
         <dxo-editing
           mode="row"
           [allowUpdating]="true"
           [allowAdding]="true"
-          [allowDeleting]="true"
-        >
+          [allowDeleting]="true">
 
           <dxo-form>
             <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
@@ -91,14 +99,26 @@
               <dxi-item dataField="quantidade"></dxi-item>
               <dxi-item dataField="valorDoItem"></dxi-item>
             </dxi-item>
-
           </dxo-form>
         </dxo-editing>
 
-        <dxi-column dataField="numeroDoItem" caption="Nº Item"></dxi-column>
-        <dxi-column dataField="produto" caption="Produto" cellTemplate="cellTemplateProduto" editCellTemplate="editCellTemplateProduto"></dxi-column>
-        <dxi-column dataField="quantidade" caption="Quantidade"></dxi-column>
-        <dxi-column dataField="valorDoItem" caption="Valor do Item"></dxi-column>
+        <dxo-sorting mode="single"></dxo-sorting>
+        <dxi-column dataField="numeroDoItem" caption="Nº Item" sortOrder="asc">
+          <dxi-validation-rule type="required" message="Numero do Item é obrigatório, favor inserir um numero"></dxi-validation-rule>
+          <dxi-validation-rule type="numeric" [min]="2" message="Inserir mais digitos"></dxi-validation-rule>
+        </dxi-column>
+
+        <dxi-column dataField="produto" caption="Produto" cellTemplate="cellTemplateProduto" editCellTemplate="editCellTemplateProduto" [setCellValue]="setCellValueProduto">
+          <dxi-validation-rule type="required" message="Por favor, selecionar um produto para o item da nota"></dxi-validation-rule>
+        </dxi-column>
+
+        <dxi-column dataField="quantidade" caption="Quantidade"[setCellValue]="setCellValueQuantidade">
+          <dxi-validation-rule type="required" message="Por favor, inserir quantidade"></dxi-validation-rule>
+        </dxi-column>
+
+        <dxi-column dataField="valorDoItem" caption="Valor do Item" [allowEditing]="false">
+          <dxi-validation-rule type="required" message=""></dxi-validation-rule>
+        </dxi-column>
 
         <div *dxTemplate="let data of 'cellTemplateProduto'">{{data.value ? data.value.descricao : ''}}</div>
 
@@ -107,13 +127,11 @@
             [items]="produtos"
             displayExpr = "descricao"
             [value]="getProdutos(data.value)"
-            (onFocusOut)= "onValueChangedProduto($event, data)"
-          >
+            (onValueChanged)= "onValueChangedProduto($event, data)">
           </dx-select-box>
         </div>
 
       </dx-data-grid>
-
     </div>
 
     ></dx-data-grid>
