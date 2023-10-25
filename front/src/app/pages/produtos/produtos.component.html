@@ -30,9 +30,19 @@
       </dxo-form>
     </dxo-editing>
 
-    <dxi-column dataField="codigo" caption="Codigo"></dxi-column>
-    <dxi-column dataField="descricao" caption="Descrição"></dxi-column>
-    <dxi-column dataField="valorUnitario" caption="Valor Unitário"></dxi-column>
+    <dxo-sorting mode="single"></dxo-sorting>
+    <dxi-column dataField="codigo" caption="Codigo" sortOrder="asc">
+      <dxi-validation-rule type="required" message="Por favor, preencher Codigo do Produto"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="descricao" caption="Descrição">
+      <dxi-validation-rule type="required" message="Por favor, inserir uma descrição"></dxi-validation-rule>
+      <dxi-validation-rule type="stringLength" [min]="3" message="Por favor, inserir no minimo 3 caracteres"></dxi-validation-rule>
+    </dxi-column>
+
+    <dxi-column dataField="valorUnitario" caption="Valor Unitário">
+      <dxi-validation-rule type="required" message="Por favor, inserir o valor unitário do produto"></dxi-validation-rule>
+    </dxi-column>
 
     ></dx-data-grid>
 </div>

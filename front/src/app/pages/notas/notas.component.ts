@@ -81,12 +81,11 @@ export class NotasComponent implements OnInit {
       event.data.data = new Date();
     }
   }
-
   onInitNewRowItem(event:any, data:any){
     console.log(event)
     console.log(data)
     if(!event.data.item){
-      console.log("2 passo")
+      event.data.item.numeroDoItem.setValue(data.data.item.length + 1);
     }
   }
 
@@ -120,6 +119,10 @@ export class NotasComponent implements OnInit {
   setCellValueQuantidade(newData, value, currentRowData){
     newData.quantidade = value;
     newData.valorDoItem = currentRowData.produto?.valorUnitario * value;
+  }
+
+  setCellValueNumeroDoItem(newData, value=4, currentRowData){
+    newData.numeroDoItem = value;
   }
 
   showLog(event: any, log: string){

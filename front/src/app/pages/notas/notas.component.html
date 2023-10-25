@@ -103,7 +103,7 @@
         </dxo-editing>
 
         <dxo-sorting mode="single"></dxo-sorting>
-        <dxi-column dataField="numeroDoItem" caption="Nº Item" sortOrder="asc">
+        <dxi-column dataField="numeroDoItem" caption="Nº Item" sortOrder="asc" [setCellValue]="setCellValueNumeroDoItem">
           <dxi-validation-rule type="required" message="Numero do Item é obrigatório, favor inserir um numero"></dxi-validation-rule>
           <dxi-validation-rule type="numeric" [min]="2" message="Inserir mais digitos"></dxi-validation-rule>
         </dxi-column>
