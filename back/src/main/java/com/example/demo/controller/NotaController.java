@@ -43,9 +43,14 @@ public class NotaController {
                    iten.setNota(nota);
                }
             }
-
         }
-        repository.save(nota);
+        if(nota != null && nota.getItem() != null && !nota.getItem().isEmpty()
+            && nota.getNumero() != null
+            && nota.getData() !=null
+            && nota.getValorTotal() !=null
+            && nota.getCliente() !=null){
+            repository.save(nota);
+        }
         return nota;
     }
 
@@ -64,7 +69,11 @@ public class NotaController {
             }
 
         }
-        nota = repository.save(nota);
+
+        if(nota != null && nota.getItem() != null && !nota.getItem().isEmpty() && nota.getNumero() != null && nota.getData() !=null && nota.getValorTotal() !=null && nota.getCliente() !=null) {
+
+            nota = repository.save(nota);
+        }
         return nota;
     }
 }

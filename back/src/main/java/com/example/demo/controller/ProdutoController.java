@@ -35,7 +35,9 @@ public class ProdutoController {
 
     @PostMapping("/new")
     public Produto postProduto(@RequestBody Produto produto){
-        repository.save(produto);
+        if( produto != null && produto.getCodigo() !=null && produto.getValorUnitario() !=null){
+            repository.save(produto);
+        }
         return produto;
     }
 
@@ -46,7 +48,9 @@ public class ProdutoController {
 
     @PutMapping("/")
     public Produto updateProduto(@RequestBody Produto produto){
-        repository.save(produto);
+        if( produto != null && produto.getCodigo() !=null && produto.getValorUnitario() !=null) {
+            repository.save(produto);
+        }
         return produto;
     }
 }

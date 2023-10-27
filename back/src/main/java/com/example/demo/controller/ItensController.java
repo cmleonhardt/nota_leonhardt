@@ -32,10 +32,17 @@ public class ItensController {
     };
 
     @PostMapping("/new")
-    public Item postItens(@RequestBody Item item){
-        repository.save(item);
+    public Item postItens(@RequestBody Item item) {
+        if (item != null && item.getNumeroDoItem() != null
+                && item.getQuantidade() != null
+                && item.getValorDoItem() != null
+                && item.getProduto() != null
+                && item.getNota() != null) {
+            repository.save(item);
+        }
         return item;
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteItens(@PathVariable Integer id){
@@ -45,7 +52,13 @@ public class ItensController {
 
     @PutMapping("/")
     public Item updateItens(@RequestBody Item item){
-        repository.save(item);
+        if (item != null && item.getNumeroDoItem() != null
+                && item.getQuantidade() != null
+                && item.getValorDoItem() != null
+                && item.getProduto() != null
+                && item.getNota() != null){
+            repository.save(item);
+        }
         return item;
     }
 }

@@ -5,8 +5,10 @@ import com.example.demo.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
+import javax.swing.JOptionPane;
 
 @RestController
 @RequestMapping( "/cliente")
@@ -14,6 +16,10 @@ public class ClienteController {
 
     @Autowired
     private ClienteRepository rep;
+
+//    public static void main(String[] args){
+//        JOptionPane.showMessageDialog(null,"Teste! \n, Mensagem");
+//    }
 
 
     @GetMapping("/nome")
@@ -42,7 +48,9 @@ public class ClienteController {
 
     @PostMapping("/new")
     public Cliente postClientes(@RequestBody Cliente cliente) {
-        rep.save(cliente);
+        if(cliente != null && cliente.getCodigo() != null && cliente.getNome() !=null){
+            rep.save(cliente);
+        }
         return cliente;
     }
 
@@ -54,7 +62,9 @@ public class ClienteController {
 
     @PutMapping("/")
     public Cliente updateClientes(@RequestBody Cliente cliente){
-        rep.save(cliente);
+        if(cliente != null && cliente.getCodigo() != null && cliente.getNome() !=null) {
+            rep.save(cliente);
+        }
         return cliente;
     };
 
