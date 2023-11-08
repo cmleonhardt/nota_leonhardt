@@ -3,6 +3,13 @@
 <!--</header>-->
 
 <h5>Clientes</h5>
+<!--<div id=erro *ngIf="erroVisivel">{{ mensagem }}</div>-->
+<app-show-message
+  [visivel]="showNotificacaoCliente"
+  [type]="typeCliente"
+  [message]="messageCliente">
+</app-show-message>
+
 <div>
   <dx-data-grid
     id="gridCliente"
@@ -42,6 +49,7 @@
       <dxi-validation-rule type="required" message="Por favor, inserir nome do Cliente"></dxi-validation-rule>
       <dxi-validation-rule type="stringLength" [min]="3" message="Por favor, inserir no minimo 3 caracteres"></dxi-validation-rule>
     </dxi-column>
+    <span></span>
 
    ></dx-data-grid>
 </div>

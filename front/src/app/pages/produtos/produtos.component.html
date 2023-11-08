@@ -1,26 +1,33 @@
 <h5>Produtos</h5>
+
+  <app-show-message
+    [visivel]="showNotificacaoProduto"
+    [type]="typeProduto"
+    [message]="messageProduto">
+  </app-show-message>
+
 <div>
   <dx-data-grid
     id="gridProdutos"
     [dataSource]="produtos"
     keyExpr="id"
     [showBorders]="true"
-    (onSaved)="onSavedProduto($event)"
-  >
+    (onSaved)="onSavedProduto($event)">
+
     <dxo-paging [enabled]="false"></dxo-paging>
     <dxo-editing
       mode="popup"
       [allowUpdating]="true"
       [allowAdding]="true"
-      [allowDeleting]="true"
-    >
+      [allowDeleting]="true">
+
       <dxo-popup
         title="Produtos"
         [showTitle]="true"
         [width]="700"
-        [height]="400"
-      >
+        [height]="400">
       </dxo-popup>
+
       <dxo-form>
         <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
           <dxi-item dataField="codigo"></dxi-item>

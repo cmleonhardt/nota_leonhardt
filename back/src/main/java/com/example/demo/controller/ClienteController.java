@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Cliente;
 import com.example.demo.repository.ClienteRepository;
+import org.hibernate.service.spi.ServiceException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +17,8 @@ import javax.swing.JOptionPane;
 public class ClienteController {
 
     @Autowired
-    private ClienteRepository rep;
+    private ClienteRepository repository
+            ;
 
 //    public static void main(String[] args){
 //        JOptionPane.showMessageDialog(null,"Teste! \n, Mensagem");
@@ -31,7 +34,7 @@ public class ClienteController {
     @GetMapping("/{id}")
     public Cliente getCliente(@PathVariable Optional<Cliente> id) {
         Cliente cli = new Cliente();
-        Optional<Cliente> op = Optional.ofNullable(rep.findById(id));
+        Optional<Cliente> op = Optional.ofNullable(repository.findById(id));
         if (op.isPresent()) {
             return op.get();
         }
@@ -41,31 +44,42 @@ public class ClienteController {
 
     @GetMapping("/clientes")
     public List<Cliente> getClientes() {
-        List<Cliente> c = rep.findAll();
+        List<Cliente> c = repository.findAll();
 
         return c;
     };
 
     @PostMapping("/new")
-    public Cliente postClientes(@RequestBody Cliente cliente) {
-        if(cliente != null && cliente.getCodigo() != null && cliente.getNome() !=null){
-            rep.save(cliente);
+    public Cliente postClientes(@RequestBody Cliente cliente) throws Exception {
+
+        if(cliente.getCodigo()==null){
+            throw new Exception("Código nulo, por favor inserir um código");
         }
+        if(cliente.getNome()==null){
+            throw new Exception("Nome do cliente nulo, por favor inserir um nome");
+        }
+        repository.save(cliente);
         return cliente;
     }
 
     @DeleteMapping("/{id}")
     public void deleteClientes(@PathVariable Integer id) {
 
-        rep.deleteById(id);
-    };
+        repository.deleteById(id);
+    }
 
     @PutMapping("/")
-    public Cliente updateClientes(@RequestBody Cliente cliente){
-        if(cliente != null && cliente.getCodigo() != null && cliente.getNome() !=null) {
-            rep.save(cliente);
+    public Cliente updateClientes(@RequestBody Cliente cliente) throws Exception{
+
+        if(cliente.getCodigo()==null){
+            throw new Exception("Código nulo, por favor inserir um código");
         }
+        if(cliente.getNome()==null){
+            throw new Exception("Nome do cliente nulo, por favor inserir um nome");
+        }
+
+        repository.save(cliente);
         return cliente;
-    };
+    }
 
 }

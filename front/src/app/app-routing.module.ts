@@ -11,6 +11,7 @@ import { SelectBoxCidadeEstadoModule} from "./shared/components/select-box-cidad
 import {ClientesComponent} from "./pages/clientes/clientes.component";
 import {ProdutosComponent} from "./pages/produtos/produtos.component";
 import {NotasComponent} from "./pages/notas/notas.component";
+import {ShowMessageModule} from "./shared/components/show-message/show-message.component";
 
 const routes: Routes = [
   {
@@ -81,7 +82,7 @@ const routes: Routes = [
     DxFormModule,
     DxSelectBoxModule,
     SelectBoxCidadeEstadoModule,
-
+    ShowMessageModule
   ],
 
   providers: [AuthGuardService],

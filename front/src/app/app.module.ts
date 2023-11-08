@@ -13,7 +13,7 @@ import {
 import {AppInfoService, AuthService, ScreenService} from './shared/services';
 import {UnauthenticatedContentModule} from './unauthenticated-content';
 import {CidadeEstadoService} from "./shared/services/cidade-estado.service";
-import {DxDataGridModule, DxDateBoxModule, DxSelectBoxModule, DxTextBoxModule} from "devextreme-angular";
+import {DxDataGridModule, DxDateBoxModule, DxSelectBoxModule, DxTextBoxModule, DxToastModule} from "devextreme-angular";
 import {HttpClientModule} from "@angular/common/http";
 import {AppRoutingModule} from "./app-routing.module";
 import {
@@ -26,6 +26,7 @@ import {ClienteService} from "./shared/services/cliente.service";
 import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
 import {ProdutoService} from "./shared/services/produto.service";
 import { OrderPipe } from './shared/components/order.pipe';
+import {ShowMessageComponent, ShowMessageModule} from './shared/components/show-message/show-message.component';
 
 
 @NgModule({
@@ -34,7 +35,7 @@ import { OrderPipe } from './shared/components/order.pipe';
     ClientesComponent,
     ProdutosComponent,
     NotasComponent,
-    OrderPipe
+    OrderPipe,
 
   ],
   imports: [
@@ -54,7 +55,9 @@ import { OrderPipe } from './shared/components/order.pipe';
     SelectBoxCidadeEstadoModule,
     DxDataGridModule,
     DxDateBoxModule,
-    DxTextBoxModule
+    DxTextBoxModule,
+    DxToastModule,
+    ShowMessageModule,
   ],
   providers: [
     AuthService,

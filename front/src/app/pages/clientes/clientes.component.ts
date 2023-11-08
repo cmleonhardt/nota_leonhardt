@@ -15,6 +15,12 @@ export class ClientesComponent implements OnInit{
 
   clientes: Cliente[] = [];
 
+  showNotificacaoCliente: boolean = false;
+
+  typeCliente = 'info';
+  messageCliente: string;
+
+
   constructor( private clienteService: ClienteService) {
   }
 
@@ -26,11 +32,24 @@ export class ClientesComponent implements OnInit{
 
   getClienteService(): any { return this.clienteService;}
 
+
   onSavedCliente(event: any) {
     if(event.changes){
       for (let change of event.changes) {
         if(change.type == 'insert'){
-          this.clienteService.insert(change.data).subscribe();
+          this.clienteService.insert(change.data).subscribe(c =>{
+            this.typeCliente = 'success'
+            this.messageCliente = 'Cliente salvo com sucesso'
+            this.showNotificacaoCliente = true;
+              setTimeout(() => this.showNotificacaoCliente=false, 3000);
+            },
+              e => {
+                // console.log(e)
+                this.typeCliente = 'error';
+                this.messageCliente = 'Erro ao gravar cliente, por favor verificar campo vazio';
+                this.showNotificacaoCliente = true
+                setTimeout(() => this.showNotificacaoCliente=false, 3000);
+          });
         }
       }
     }
@@ -38,7 +57,19 @@ export class ClientesComponent implements OnInit{
     if(event.changes){
       for (let change of event.changes) {
         if(change.type == 'update'){
-          this.clienteService.update(change.data).subscribe();
+          this.clienteService.update(change.data).subscribe(c =>{
+              this.typeCliente = 'success'
+              this.messageCliente = 'Cliente atualizado com sucesso'
+              this.showNotificacaoCliente = true;
+              setTimeout(() => this.showNotificacaoCliente=false, 3000);
+            },
+            e => {
+              // console.log(e)
+              this.typeCliente = 'error';
+              this.messageCliente = 'Erro ao atualizar cliente, por favor verificar campo vazio';
+              this.showNotificacaoCliente = true
+              setTimeout(() => this.showNotificacaoCliente=false, 3000);
+            });
         }
       }
     }

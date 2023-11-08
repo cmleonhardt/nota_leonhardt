@@ -53,12 +53,12 @@ export class SelectBoxCidadeEstadoComponent implements OnInit{
   ngOnInit(): void{
     console.log(1)
     this.mainService.estadolist().subscribe(res => {
-      console.log(2)
+      // console.log(2)
       this.estadoArray = res;
-      console.log(3)
+      // console.log(3)
       this.estadoPadrao = this.setaEstadoPadrao(this.estadoArray, this.estadoPadrao);
     });
-    console.log(4)
+    // console.log(4)
 
   }
 

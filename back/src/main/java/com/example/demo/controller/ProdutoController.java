@@ -23,7 +23,6 @@ public class ProdutoController {
         if (produto.isPresent()) {
             return produto.get();
         }
-
         return prod;
     }
 
@@ -34,23 +33,39 @@ public class ProdutoController {
     }
 
     @PostMapping("/new")
-    public Produto postProduto(@RequestBody Produto produto){
-        if( produto != null && produto.getCodigo() !=null && produto.getValorUnitario() !=null){
-            repository.save(produto);
+    public Produto postProduto(@RequestBody Produto produto) throws Exception {
+
+        if(produto.getCodigo() == null){
+            throw new Exception("Código do Produto nulo, por favor inserir um código");
         }
+        if(produto.getDescricao() == null){
+            throw new Exception("Por favor, inserir descrição do produto");
+        }
+        if(produto.getValorUnitario() == null){
+            throw new Exception("Valor unitário do produto nulo, favor inserir um valor");
+        }
+        repository.save(produto);
+        return produto;
+    }
+
+    @PutMapping("/")
+    public Produto updateProduto(@RequestBody Produto produto) throws Exception{
+
+        if(produto.getCodigo() == null){
+            throw new Exception("Código do Produto nulo, por favor inserir um código");
+        }
+        if(produto.getDescricao() == null){
+            throw new Exception("Por favor, inserir descrição do produto");
+        }
+        if(produto.getValorUnitario() == null){
+            throw new Exception("Valor unitário do produto nulo, favor inserir um valor");
+        }
+        repository.save(produto);
         return produto;
     }
 
     @DeleteMapping("/{id}")
     public void deleteProduto(@PathVariable Integer id){
         repository.deleteById(id);
-    }
-
-    @PutMapping("/")
-    public Produto updateProduto(@RequestBody Produto produto){
-        if( produto != null && produto.getCodigo() !=null && produto.getValorUnitario() !=null) {
-            repository.save(produto);
-        }
-        return produto;
     }
 }
